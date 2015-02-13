@@ -1,3 +1,6 @@
+
+//https://github.com/j9k/apricot_leds/
+
 #include <Adafruit_NeoPixel.h>
 
 #include <PinChangeInt.h>
@@ -7,11 +10,7 @@
 #define BUTTONPIN      10
 #define NUMPIXELS      13
 
-
-
 volatile uint16_t interruptCount=0;
-
-
 
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800); //  neopixel setup
 
@@ -28,7 +27,7 @@ void setup() {
 clear_Led();
 
 pinMode(BUTTONPIN, INPUT_PULLUP); //may need to change back to normal input for production
-attachPinChangeInterrupt(BUTTONPIN, button_ISR, CHANGE);
+attachPinChangeInterrupt(BUTTONPIN, button_ISR, FALLING);
 
 pinMode(hddPin, INPUT_PULLUP);
 
@@ -37,7 +36,7 @@ pinMode(hddPin, INPUT_PULLUP);
 
 void loop() {
   
-  buttonCount = buttonCount % 3;
+  buttonCount = interruptCount % 3;
   
   
   switch (buttonCount) {
@@ -57,8 +56,8 @@ void loop() {
 
 
 void button_ISR(){
-buttonCount = buttonCount++;
-
+interruptCount++;
+pause = pause++ % 100;
 }
 
 void clear_Led() {
@@ -71,7 +70,7 @@ void clear_Led() {
 
 
 void colorcycle(){
-  pause = 100;
+ // pause = 100;
   for(int i=0;i<NUMPIXELS;i++){
     pixels.setPixelColor(i, pixels.Color(red,0,0)); 
     pixels.show(); 
