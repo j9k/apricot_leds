@@ -9,14 +9,16 @@
 #define PIN            9 //the neopixel output pin
 #define BUTTONPIN      10
 #define NUMPIXELS      13
+#define HDDPIN         11
+volatile uint16_t hddInterruptCount=0;
+volatile uint16_t buttonInterruptCount=0;
 
-volatile uint16_t interruptCount=0;
 
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800); //  neopixel setup
 
 
 //debounce variables
-long debouncing_time = 15; //Debouncing Time in Milliseconds
+volatile unsigned long debouncing_time = 15; //Debouncing Time in Milliseconds
 volatile unsigned long last_micros;
 
 
@@ -33,19 +35,19 @@ int blue = 80;
 
 void setup() {
     pixels.begin();
-clear_Led();
+    clear_Led();
 
 pinMode(BUTTONPIN, INPUT_PULLUP); //may need to change back to normal input for production
 attachPinChangeInterrupt(BUTTONPIN, button_ISR, FALLING);
 
 pinMode(hddPin, INPUT_PULLUP);
-
+attachPinChangeInterrupt(HDDPIN, hdd_ISR, FALLING);
 
 }
 
 void loop() {
   
-  buttonCount = interruptCount % 2;
+  buttonCount = buttonInterruptCount % 2;
   
   
   switch (buttonCount) {
@@ -58,23 +60,25 @@ void loop() {
   default: 
     delay(50);
 }
-  
-
 }
-
-
 
 void button_ISR(){        // this function needs to be short and exit naturally
     if((long)(micros() - last_micros) >= debouncing_time * 1000) {
-      interruptCount++;
-      pause = pause++ % 100;
-    
-    last_micros = micros();
+      buttonInterruptCount++;
+      pause = pause++ % 100;    
+      last_micros = micros();
     }
-  
-  
-
 }
+  
+void hdd_ISR(){        // this function needs to be short and exit naturally
+    
+    hddInterruptCount++;
+    //if((long)(micros() - last_micros) >= debouncing_time * 1000) {
+     // hddInterruptCount++;
+     // pause = pause++ % 100;
+     // last_micros = micros();
+    }
+
 
 void clear_Led() {
 
@@ -86,7 +90,7 @@ void clear_Led() {
 
 
 void colorcycle(){
-  pause = interruptCount;
+  pause = buttonInterruptCount;
   for(int i=0;i<NUMPIXELS;i++){
     pixels.setPixelColor(i, pixels.Color(red,0,0)); 
     pixels.show(); 
