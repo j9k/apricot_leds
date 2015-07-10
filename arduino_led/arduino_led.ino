@@ -1,4 +1,30 @@
 
+/*fuse settings for atmega32u4
+
+BODLEVEL = 2V6
+HWBE = [ ]
+OCDEN = [ ]
+JTAGEN = [ ]
+SPIEN = [X]
+WDTON = [ ]
+EESAVE = [ ]
+BOOTSZ = 2048W_3800
+BOOTRST = [X]
+CKDIV8 = [ ]
+CKOUT = [ ]
+SUT_CKSEL = EXTXOSC_8MHZ_XX_16KCK_65MS
+
+EXTENDED = 0xCB (valid)
+HIGH = 0xD8 (valid)
+LOW = 0xFF (valid)*/
+
+
+
+
+
+
+
+
 //https://github.com/j9k/apricot_leds/
 
 //https://github.com/GreyGnome/PinChangeInt
