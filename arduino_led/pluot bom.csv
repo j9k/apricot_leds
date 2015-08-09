@@ -1,0 +1,9 @@
+Name,Quantity,Pattern,Value,Number of Pins
+CAP_0603,14,CAP_0603,.1 uf,28
+CAP_0603,1,CAP_0603,1uf,2
+RES_0603,1,RES_0603,1m,2
+RES_0603,2,RES_0603,220R,2
+RES_0603,1,RES_0603,10k,2
+ws2812b,13,ws2812b,,4
+16 mhz resonator,1,16mhz resonator,16mhz,3
+ATmega32u4,1,QFN-44/7x7x0.5,,45
